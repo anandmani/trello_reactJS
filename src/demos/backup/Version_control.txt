@@ -1,0 +1,4 @@
+v1-0  = backup
+Current = Changed component-name Comp to Card
+v1-1 
+Added Modal

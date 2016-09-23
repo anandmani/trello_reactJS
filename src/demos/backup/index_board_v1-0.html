@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>React - Template</title>
+    <script src="../../js/react.js"></script>
+    <script src="../../js/react-dom.min.js"></script>
+    <script src="../../js/browser.min.js"></script>
+    <link type="text/css" href="stylesheet.css" rel="stylesheet"/>
+</head>
+<body>
+
+<div id="container"></div>
+<script type="text/babel">
+
+    var Comp = React.createClass({
+
+       getInitialState: function(){ //Gets called only when the component is first created. Does not get called when the component is getting re-rendered?
+         console.log("getting init state");
+            return {edit: false}
+       },
+
+        edit: function(){
+          console.log("Clicked");
+          var currentState = this.state.edit;
+          console.log("In Edit - Old Value",currentState);
+           this.setState({edit: !currentState});
+           console.log("In Edit - New Value = ",!currentState);
+        },
+
+        remove: function(event){
+          console.log("event",event);
+          if (event.stopPropagation) {
+              console.log("stopping propagation?")
+              event.stopPropagation();   // W3C model
+          } else {
+              event.cancelBubble = true; // IE model
+          }
+          this.props.remComp(this.props.ind);
+        },
+
+        save: function(){
+          if(this.refs.textInput.value.trim() == "");
+          else{
+            //  console.log("In save, current value; Edit = ",this.state.edit);   //Value 1
+            //  this.setState({edit: false});     //Not setting
+            //  console.log("In save, making edit False; Edit = ",this.state.edit);     //Value 2
+            this.props.svComp( this.refs.textInput.value, this.props.ind);  //Skipping set state edit = false as click propogates to div and div will set it to false. Since div sets edit to false, textInput value is retained
+
+            /* Value 1 and Value 2 are same. As in the state is not set yet.
+            Probably set outside fucntion. Also, the click gets propogated to the div. OnClick div sets edit to false. Maybe the setState Edit gets clubebd together?*/
+          }
+        },
+
+        stopPropText : function(event){     //Where does this event magically come from?????;       Why do I have to stop propagation only from textArea why not from saveButton
+          console.log("event",event);
+          if (event.stopPropagation) {
+              console.log("stopping propagation?")
+              event.stopPropagation();   // W3C model
+          } else {
+              event.cancelBubble = true; // IE model
+          }
+        },
+
+        checkEnter : function(event){
+          //Make validation that card name is not empty
+            if(this.refs.textInput.value.trim() == "");
+            else{
+              if(event.keyCode == 13) //If value is not empty, enter triggers save button
+                this.refs.cardNameSave.click();
+            }
+        },
+
+        renderNormal: function(){
+        //  var self =this;  //Is this the right way????
+          console.log("render Normal");
+          return(<div className="card">
+              <p  onClick={this.edit} >{this.props.children}</p>
+
+              <button id="button2" onClick={this.remove}>Remove</button>
+          </div>);
+          //function(){self.remove(event);}
+        },
+
+        renderEditing: function(){
+            console.log("render editing");
+            return(<div className="card"  onClick={this.edit}>
+                        <textarea ref="textInput" placeholder ={this.props.children} autoFocus = {focus} onClick={this.stopPropText} onKeyDown={this.checkEnter} ></textarea>
+                        <button id="button3" ref="cardNameSave" onClick={this.save}>Save</button>
+                   </div>);
+        },
+
+        render: function(){
+            if(this.state.edit){
+                console.log("Component Edit Rendering",this.props.ind);
+                console.log("edit",this.state.edit);
+                return this.renderEditing();
+            }
+            else{
+              console.log("Component Rendering",this.props.ind);
+              console.log("edit",this.state.edit);
+                return this.renderNormal();
+            }
+        }
+    })
+
+
+
+    var List = React.createClass({
+
+        getInitialState: function(){
+            return {comments:[
+            'Anand Mani',
+            'Aarti Prabhu',
+            'Karthik Iyer']};
+        },
+
+        removeComp: function(index){
+            var arr = this.state.comments;
+            arr.splice(index,1);
+            this.setState({comments:arr});
+        },
+
+        saveComp: function(text, index){
+            var arr = this.state.comments;
+            arr[index] = text;
+            this.setState({comments: arr});
+        },
+
+        eachComp: function(item,index){ //Map just automatically serves these two parameters???????
+            console.log(item,index);
+             return(<Comp key={index} ind={index} remComp={this.removeComp} svComp={this.saveComp}>{item}</Comp>);
+        },
+
+        newComp: function(){
+             var arr = this.state.comments;
+             arr.push("Default Component");
+            this.setState({comments:arr});
+
+        },
+
+        render: function(){
+        console.log("List Render");
+            return(
+            <div className ="List">
+            <button onClick={this.newComp}>New Component</button>
+            <div>{this.state.comments.map(this.eachComp)}</div>
+            </div>
+            );
+        }
+    })
+
+
+
+    ReactDOM.render(<List/>,document.getElementById("container"));
+
+</script>
+
+</body>
+</html>

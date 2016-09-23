@@ -1,0 +1,117 @@
+
+body{
+	background-color: black;
+}
+#container{
+	background-color: black;
+}
+.list{
+	background-color: #ff6666;
+	display: inline-block;
+	width: 300px;
+}
+.card{
+	text-align: center;
+	background-color: #ff9999;
+	margin:20px;
+}
+.card:nth-child(odd){
+	text-align: center;
+	background-color: #ffcccc;
+	margin:20px;
+}
+.card:hover{
+	background-color:#ff6666;
+	border:solid black 1px;
+}
+.cardName{
+	display: inline-block;
+	font-family: cursive;
+}
+.cardName:hover{
+	color: white;
+}
+.buttonRemoveCard{
+	float: left;
+
+}
+
+
+.cardDescTextBox{
+	height: 60px;
+	width: 200px;
+	float:left;
+}
+.cardDescSave{
+	float:right;
+}
+.closeModal{
+	margin-top:100px;
+	clear:both;
+}
+
+
+h1, h3 {
+    text-align: center;
+    margin: 0 0 20px 0;
+}
+
+.modal {
+	font-family: cursive;
+    padding: 20px;
+		display: inline-block;
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    margin: -70px 0 0 -120px;
+
+    border: 1px solid #ccc;
+    background-color: #ff9999;
+}
+
+button {
+    display: block;
+    margin: 0 auto;
+    padding: 6px 12px;
+
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: grey;
+
+    color: white;
+    font-weight: bold;
+
+    font-size: 14px;
+    line-height: 20px;
+}
+
+button:hover{
+	background: grey;
+	color: black;
+}
+
+/* Animation */
+
+.modal-anim-enter {
+    opacity: 0.00;
+    transform: scale(0.7);
+    transition: all 0.2s;
+}
+
+.modal-anim-enter.modal-anim-enter-active {
+    opacity: 1;
+    transform: scale(1);
+
+}
+
+.modal-anim-leave {
+    opacity: 1;
+    transform: scale(1);
+    transition: all 0.2s;
+}
+
+.modal-anim-leave.modal-anim-leave-active {
+    opacity: 0.00;
+    transform: scale(0.7);
+}
